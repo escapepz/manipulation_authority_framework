@@ -1,0 +1,12 @@
+author=escapepz
+
+id=manipulation_authority_framework
+name=Manipulation Authority Framework
+
+poster=poster.png
+icon=icon.png
+
+modversion=1.0.0
+versionMin=42.13.1
+
+require=\zul,\pz_lua_commons

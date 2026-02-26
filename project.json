@@ -1,0 +1,16 @@
+{
+    "$schema": "https://raw.githubusercontent.com/escapepz/project-zomboid-studio/refs/heads/b42.13.1/pzstudio.schema.json",
+    "title": "Manipulation Authority Framework",
+    "authors": [],
+    "workshop": {
+        "visibility": "unlisted",
+        "tags": ["Build 42"],
+        "excludes": []
+    },
+    "mods": {
+        "manipulation_authority_framework": {
+            "name": "Manipulation Authority Framework",
+            "description": ""
+        }
+    }
+}
