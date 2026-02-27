@@ -1,1 +1,102 @@
 VERSION = 1,
+
+-- Listener / Phase Listener Limits
+option ManipulationAuthorityFramework.VisualEventListenersMax
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_VisualEventListenersMax,
+    tooltip = ManipulationAuthorityFramework_VisualEventListenersMax_tooltip,
+    type = integer,
+    min = 1,
+    max = 1000,
+    default = 25,
+}
+
+option ManipulationAuthorityFramework.ValidateEventListenersMax
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_ValidateEventListenersMax,
+    tooltip = ManipulationAuthorityFramework_ValidateEventListenersMax_tooltip,
+    type = integer,
+    min = 1,
+    max = 1000,
+    default = 25,
+}
+
+option ManipulationAuthorityFramework.PreActionEventListenersMax
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_PreActionEventListenersMax,
+    tooltip = ManipulationAuthorityFramework_PreActionEventListenersMax_tooltip,
+    type = integer,
+    min = 1,
+    max = 1000,
+    default = 50,
+}
+
+option ManipulationAuthorityFramework.PostActionEventListenersMax
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_PostActionEventListenersMax,
+    tooltip = ManipulationAuthorityFramework_PostActionEventListenersMax_tooltip,
+    type = integer,
+    min = 1,
+    max = 1000,
+    default = 100,
+}
+
+-- Client / Cursor Patches
+option ManipulationAuthorityFramework.ISDestroyCursorProtection
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_ISDestroyCursorProtection,
+    tooltip = ManipulationAuthorityFramework_ISDestroyCursorProtection_tooltip,
+    type = boolean,
+    default = true,
+}
+
+option ManipulationAuthorityFramework.ISMoveableCursorProtection
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_ISMoveableCursorProtection,
+    tooltip = ManipulationAuthorityFramework_ISMoveableCursorProtection_tooltip,
+    type = boolean,
+    default = true,
+}
+
+option ManipulationAuthorityFramework.ISMoveableSpritePropsProtection
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_ISMoveableSpritePropsProtection,
+    tooltip = ManipulationAuthorityFramework_ISMoveableSpritePropsProtection_tooltip,
+    type = boolean,
+    default = true,
+}
+
+-- Server / Action Patches
+option ManipulationAuthorityFramework.ISDestroyStuffActionProtection
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_ISDestroyStuffActionProtection,
+    tooltip = ManipulationAuthorityFramework_ISDestroyStuffActionProtection_tooltip,
+    type = boolean,
+    default = true,
+}
+
+option ManipulationAuthorityFramework.ISDismantleActionProtection
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_ISDismantleActionProtection,
+    tooltip = ManipulationAuthorityFramework_ISDismantleActionProtection_tooltip,
+    type = boolean,
+    default = true,
+}
+
+option ManipulationAuthorityFramework.ISMoveablesActionProtection
+{
+    page = ManipulationAuthorityFramework,
+    translation = ManipulationAuthorityFramework_ISMoveablesActionProtection,
+    tooltip = ManipulationAuthorityFramework_ISMoveablesActionProtection_tooltip,
+    type = boolean,
+    default = true,
+}

@@ -1,30 +1,53 @@
 local patches = {}
 
 function patches.clientSidePatch()
-    -- Client side guard (second guard)
-    local original_isValid = ISDestroyStuffAction.isValid
-    function ISDestroyStuffAction:isValid()
-        local object = self.item
-        if object and object:getModData().isShop then
-            -- Block EVERYONE (including admins): must unregister shop first
-            return false
-        end
-        return original_isValid(self)
-    end
+    -- Visual phase hooks in actions are redundant.
 end
 
 function patches.serverSidePatch()
-    -- Server side final guard
+    local MAF = _G.ManipulationAuthorityFramework
+
+    local original_getDuration = ISDestroyStuffAction.getDuration
+    function ISDestroyStuffAction:getDuration()
+        if MAF.config.ISDestroyStuffActionProtection then
+            local object = self.item
+            ---@diagnostic disable-next-line: unnecessary-if
+            if object then
+                local ctx = MAF:createContext("DestroyStuff", self, object, self.character)
+                -- Fire pre-action phase (registration/instance capture)
+                MAF:processAction("pre", ctx)
+            end
+        end
+        return original_getDuration(self)
+    end
+
     local original_complete = ISDestroyStuffAction.complete
     function ISDestroyStuffAction:complete()
-        local object = self.item
-        if object and object:getModData().isShop then
-            -- Block EVERYONE (including admins): must unregister shop first
+        if MAF.config.ISDestroyStuffActionProtection then
+            local object = self.item
             ---@diagnostic disable-next-line: unnecessary-if
-            if self.action then
-                self:forceStop()
+            if object then
+                local ctx = MAF:createContext("DestroyStuff", self, object, self.character)
+                MAF:processAction("validate", ctx)
+                
+                if ctx.flags.rejected then
+                    ---@diagnostic disable-next-line: unnecessary-if
+                    if self.action then
+                        self:forceStop()
+                    end
+                    return false
+                end
+
+                -- Run Vanilla Logic
+                local result = original_complete(self)
+
+                -- Fire Post-Action phase (Side-effects)
+                if result ~= false then
+                    MAF:processAction("post", ctx)
+                end
+
+                return result
             end
-            return false
         end
         return original_complete(self)
     end

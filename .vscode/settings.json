@@ -5,5 +5,17 @@
     },
     "[lua]": {
         "editor.defaultFormatter": "JohnnyMorganz.stylua"
-    }
+    },
+    "cSpell.words": [
+        "Highlited",
+        "joypad",
+        "kikito",
+        "MAFV",
+        "middleclass",
+        "POSTACTION",
+        "PREACTION",
+        "thumpable",
+        "Zomboid"
+    ],
+    "lua.debug.settings.luaVersion": "lua51"
 }
