@@ -1,17 +1,22 @@
 {
-    "$schema": "https://raw.githubusercontent.com/escapepz/project-zomboid-studio/refs/heads/b42.13.1/pzstudio.schema.json",
-    "title": "Manipulation Authority Framework",
-    "authors": ["escapepz"],
-    "workshop": {
-        "visibility": "unlisted",
-        "tags": ["Build 42"],
-        "excludes": []
+  "$schema": "https://raw.githubusercontent.com/escapepz/project-zomboid-studio/refs/heads/b42.13.1/pzstudio.schema.json",
+  "title": "Manipulation Authority Framework",
+  "authors": ["escapepz"],
+  "workshop": {
+    "visibility": "unlisted",
+    "tags": ["Build 42"],
+    "excludes": ["maf_example_rules"]
+  },
+  "mods": {
+    "manipulation_authority_framework": {
+      "name": "Manipulation Authority Framework",
+      "description": "",
+      "require": ["\\zul", "\\pz_lua_commons"]
     },
-    "mods": {
-        "manipulation_authority_framework": {
-            "name": "Manipulation Authority Framework",
-            "description": "",
-            "require": ["\\zul","\\pz_lua_commons"]
-        }
+    "maf_example_rules": {
+      "name": "maf_example_rules",
+      "description": "",
+      "require": ["\\manipulation_authority_framework"]
     }
+  }
 }
