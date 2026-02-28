@@ -7,13 +7,20 @@ function patches.clientSidePatch()
     local original_ISDismantleAction_isValid = ISDismantleAction.isValid
     function ISDismantleAction:isValid()
         local MAF = _G.ManipulationAuthorityFramework
-        if MAF and MAF.config.ISDismantleActionProtection then
-            ---@diagnostic disable-next-line: undefined-field
+        local MAFV = _G.ManipulationAuthorityFrameworkVisual
+        if MAF and MAF.config.ISDismantleActionProtection and MAFV then
             local object = self.thumpable
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
-                local ctx = MAF:createContext("Dismantle", self, object, self.character)
-                MAF:processAction("visual", ctx)
+                local ctx = MAFV:getVisualContext(
+                    "Dismantle",
+                    object,
+                    self.character,
+                    object:getSquare(),
+                    nil
+                )
+                ctx.action = self
+                MAFV:processAction(ctx)
                 if ctx.flags.rejected then
                     return false
                 end
@@ -57,7 +64,6 @@ function patches.serverSidePatch()
     function ISDismantleAction:complete()
         local MAF = _G.ManipulationAuthorityFramework
         if MAF and MAF.config.ISDismantleActionProtection then
-            ---@diagnostic disable-next-line: undefined-field
             local object = self.thumpable
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
