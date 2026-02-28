@@ -23,7 +23,6 @@ local POSTACTION_EV = "MAF:PostAction"
 
 ---@class ManipulationAuthority
 ---@field private _rules table<string, table>
----@field public VisualEvent string
 ---@field public ValidateEvent string
 ---@field public PreActionEvent string
 ---@field public PostActionEvent string
@@ -149,7 +148,7 @@ local function protectedTrigger(eventName, context)
 end
 
 ---Fires a specific phase event with the provided context
----@param phase string The phase name ("visual", "validate", "pre", "post")
+---@param phase string The phase name ("validate", "pre", "post")
 ---@param context table The context object created by `createContext`
 ---@return boolean success Returns true if event fired without errors
 function ManipulationAuthority:processAction(phase, context)
@@ -199,7 +198,7 @@ function ManipulationAuthority:dumpDiagnostics()
 end
 
 ---Registers a rule for a specific phase.
----@param phase string The phase ("visual", "validate", "pre", "post").
+---@param phase string The phase ("validate", "pre", "post").
 ---@param id string A unique identifier for the rule.
 ---@param callback function The rule logic.
 ---@param priority number The priority (lower = earlier).
