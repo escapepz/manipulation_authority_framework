@@ -1,7 +1,7 @@
 local MAF = require("manipulation_authority_framework")
-local pz_utils = require("pz_utils_shared")
-local SafeLogger = pz_utils.escape.SafeLogger
-SafeLogger.init("maf_example_rules")
+local maf_utils = require("maf_example_rules")
+
+local SafeLogger = maf_utils.SafeLogger
 
 ---Dummy validation rule for stress testing the pruner
 local function createDummyValidator(ruleId)

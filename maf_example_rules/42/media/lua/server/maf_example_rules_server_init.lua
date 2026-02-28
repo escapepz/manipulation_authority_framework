@@ -1,4 +1,5 @@
 local maf_utils = require("maf_example_rules")
+
 local SafeLogger = maf_utils.SafeLogger
 
 local function init()

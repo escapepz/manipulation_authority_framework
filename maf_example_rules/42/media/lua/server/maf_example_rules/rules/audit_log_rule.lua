@@ -1,7 +1,7 @@
 local MAF = require("manipulation_authority_framework")
-local pz_utils = require("pz_utils_shared")
-local SafeLogger = pz_utils.escape.SafeLogger
-SafeLogger.init("maf_example_rules")
+local maf_utils = require("maf_example_rules")
+
+local SafeLogger = maf_utils.SafeLogger
 
 local tostring = tostring
 
@@ -15,6 +15,14 @@ local function logManipulation(context)
     local actionType = context.actionType
     local objName = context.object and context.object:getObjectName() or "unknown"
     local square = context.square
+    local locationStr = "unknown"
+    if square then
+        locationStr = tostring(square:getX())
+            .. ","
+            .. tostring(square:getY())
+            .. ","
+            .. tostring(square:getZ())
+    end
 
     SafeLogger.log(
         "[MAF:Audit] Player "
@@ -24,11 +32,7 @@ local function logManipulation(context)
             .. " on "
             .. tostring(objName)
             .. " at "
-            .. tostring(square:getX())
-            .. ","
-            .. tostring(square:getY())
-            .. ","
-            .. tostring(square:getZ()),
+            .. locationStr,
         20
     )
 end
