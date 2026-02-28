@@ -2,9 +2,6 @@ Sandbox_EN = {
     Sandbox_ManipulationAuthorityFramework = "Manipulation Authority Framework",
 
     -- Listener / Phase Listener Limits
-    Sandbox_ManipulationAuthorityFramework_VisualEventListenersMax = "Max Visual Phase Rules",
-    Sandbox_ManipulationAuthorityFramework_VisualEventListenersMax_tooltip = "Maximum number of rules allowed for the Visual (client UI) phase. Excess rules pruned by priority.",
-
     Sandbox_ManipulationAuthorityFramework_ValidateEventListenersMax = "Max Validate Rules",
     Sandbox_ManipulationAuthorityFramework_ValidateEventListenersMax_tooltip = "Maximum number of rules allowed for the Validate (server final guard) phase.",
 
@@ -13,16 +10,6 @@ Sandbox_EN = {
 
     Sandbox_ManipulationAuthorityFramework_PostActionEventListenersMax = "Max Post-Action Rules",
     Sandbox_ManipulationAuthorityFramework_PostActionEventListenersMax_tooltip = "Maximum number of rules allowed for the Post-Action phase.",
-
-    -- Client / Cursor Patches
-    Sandbox_ManipulationAuthorityFramework_ISDestroyCursorProtection = "[Client] Enable Sledgehammer Protection",
-    Sandbox_ManipulationAuthorityFramework_ISDestroyCursorProtection_tooltip = "Enable MAF hooks for sledgehammer destruction.",
-
-    Sandbox_ManipulationAuthorityFramework_ISMoveableCursorProtection = "[Client] Enable Moveable Cursor Protection",
-    Sandbox_ManipulationAuthorityFramework_ISMoveableCursorProtection_tooltip = "Enable MAF hooks for the pickup/scrap cursor.",
-
-    Sandbox_ManipulationAuthorityFramework_ISMoveableSpritePropsProtection = "[Client] Enable Sprite Props Guard",
-    Sandbox_ManipulationAuthorityFramework_ISMoveableSpritePropsProtection_tooltip = "Enable MAF hooks for sprite prop checks (e.g. tooltips and internal object states).",
 
     -- Server / Action Patches
     Sandbox_ManipulationAuthorityFramework_ISDestroyStuffActionProtection = "[Server] Enable Destroy Action Protection",

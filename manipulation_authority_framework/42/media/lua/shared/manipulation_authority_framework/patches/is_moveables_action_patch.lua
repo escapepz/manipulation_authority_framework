@@ -3,14 +3,29 @@ local patches = {}
 function patches.serverSidePatch()
     -- [Performance Intel]
     -- ISMoveablesAction:getDuration() is called many times (not just one time).
-    -- To avoid performance issues and redundant calls, we don't process the 'pre' phase
-    -- or set maxTime inside getDuration. The rule is to fire the 'pre' phase on creation and use :stop()
-    -- to cancel the action, rather than manipulating getDuration().
-    -- local original_ISMoveablesAction_getDuration = ISMoveablesAction.getDuration
-    -- function ISMoveablesAction:getDuration()
-    --     -- Ensure getDuration hooks only return a number.
-    --     return original_ISMoveablesAction_getDuration(self)
-    -- end
+    -- We can return 1 here if the manipulation is rejected by MAF, allowing the
+    -- action to quickly "complete" and be stopped by the server-side validator.
+    -- The actual moveable prevention is handled in :complete().
+    -- Should be lightweight
+    -- Should return only number
+    local original_ISMoveablesAction_getDuration = ISMoveablesAction.getDuration
+    function ISMoveablesAction:getDuration()
+        local MAF = _G.ManipulationAuthorityFramework
+        if MAF and MAF.config.ISMoveablesActionProtection then
+            local object = self.object
+            local mode = self.mode
+            if object and (mode == "pickup" or mode == "scrap") then
+                local ctx = MAF:createContext("Moveables", self, object, self.character)
+                MAF:processAction("validate", ctx)
+
+                if ctx.flags.rejected then
+                    return 1
+                end
+            end
+        end
+
+        return original_ISMoveablesAction_getDuration(self)
+    end
 
     local original_ISMoveablesAction_complete = ISMoveablesAction.complete
     function ISMoveablesAction:complete()
@@ -19,8 +34,9 @@ function patches.serverSidePatch()
             local object = self.object
             local mode = self.mode
             if object and (mode == "pickup" or mode == "scrap") then
+                -- pre phase should be here
                 local ctx = MAF:createContext("Moveables", self, object, self.character)
-                MAF:processAction("validate", ctx)
+                MAF:processAction("pre", ctx)
 
                 if ctx.flags.rejected then
                     ---@diagnostic disable-next-line: unnecessary-if

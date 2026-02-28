@@ -1,16 +1,32 @@
 local patches = {}
 
+-- The old ISDismantleAction
 function patches.serverSidePatch()
     -- [Performance Intel]
     -- ISDismantleAction:getDuration() is called many times (not just one time).
-    -- To avoid performance issues and redundant calls, we don't process the 'pre' phase
-    -- or set maxTime inside getDuration. The rule is to fire the 'pre' phase on creation and use :stop()
-    -- to cancel the action, rather than manipulating getDuration().
-    -- local original_ISDismantleAction_getDuration = ISDismantleAction.getDuration
-    -- function ISDismantleAction:getDuration()
-    --     -- Ensure getDuration hooks only return a number.
-    --     return original_ISDismantleAction_getDuration(self)
-    -- end
+    -- We can return 1 here if the manipulation is rejected by MAF, allowing the
+    -- action to quickly "complete" and be stopped by the server-side validator.
+    -- The actual dismantle prevention is handled in :complete().
+    -- Should be lightweight
+    -- Should return only number
+    local original_ISDismantleAction_getDuration = ISDismantleAction.getDuration
+    function ISDismantleAction:getDuration()
+        local MAF = _G.ManipulationAuthorityFramework
+        if MAF and MAF.config.ISDismantleActionProtection then
+            local object = self.thumpable
+            ---@diagnostic disable-next-line: unnecessary-if
+            if object then
+                local ctx = MAF:createContext("Dismantle", self, object, self.character)
+                MAF:processAction("validate", ctx)
+
+                if ctx.flags.rejected then
+                    return 1
+                end
+            end
+        end
+
+        return original_ISDismantleAction_getDuration(self)
+    end
 
     local original_ISDismantleAction_complete = ISDismantleAction.complete
     function ISDismantleAction:complete()
@@ -19,8 +35,9 @@ function patches.serverSidePatch()
             local object = self.thumpable
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
+                -- pre phase should be here
                 local ctx = MAF:createContext("Dismantle", self, object, self.character)
-                MAF:processAction("validate", ctx)
+                MAF:processAction("pre", ctx)
 
                 if ctx.flags.rejected then
                     ---@diagnostic disable-next-line: unnecessary-if

@@ -25,6 +25,7 @@ local POSTACTION_EV = "MAF:PostAction"
 ---@field public ValidateEvent string
 ---@field public PreActionEvent string
 ---@field public PostActionEvent string
+---@field public context
 local ManipulationAuthority = middleclass("ManipulationAuthority")
 
 function ManipulationAuthority:initialize()
@@ -36,12 +37,9 @@ function ManipulationAuthority:initialize()
 
     -- Patch protection toggles, updated during loadConfig()
     self.config = {
-        ISDestroyCursorProtection = true,
-        ISMoveableCursorProtection = true,
         ISDestroyStuffActionProtection = true,
         ISDismantleActionProtection = true,
         ISMoveablesActionProtection = true,
-        ISMoveableSpritePropsProtection = true,
     }
 end
 
@@ -56,12 +54,10 @@ function ManipulationAuthority:loadConfig()
             ValidateEventListenersMax = 25,
             PreActionEventListenersMax = 50,
             PostActionEventListenersMax = 100,
-            ISDestroyCursorProtection = true,
-            ISMoveableCursorProtection = true,
+
             ISDestroyStuffActionProtection = true,
             ISDismantleActionProtection = true,
             ISMoveablesActionProtection = true,
-            ISMoveableSpritePropsProtection = true,
         })
     end
 
@@ -75,16 +71,12 @@ function ManipulationAuthority:loadConfig()
         preMax = mafSandbox.Get("PreActionEventListenersMax", 50)
         postMax = mafSandbox.Get("PostActionEventListenersMax", 100)
 
-        self.config.ISDestroyCursorProtection = mafSandbox.Get("ISDestroyCursorProtection", true)
-        self.config.ISMoveableCursorProtection = mafSandbox.Get("ISMoveableCursorProtection", true)
         self.config.ISDestroyStuffActionProtection =
             mafSandbox.Get("ISDestroyStuffActionProtection", true)
         self.config.ISDismantleActionProtection =
             mafSandbox.Get("ISDismantleActionProtection", true)
         self.config.ISMoveablesActionProtection =
             mafSandbox.Get("ISMoveablesActionProtection", true)
-        self.config.ISMoveableSpritePropsProtection =
-            mafSandbox.Get("ISMoveableSpritePropsProtection", true)
     end
 
     -- 3. Apply Limits from Sandbox
@@ -112,14 +104,29 @@ function ManipulationAuthority:_registerEvent(eventName, id, callback, priority)
     logger:info("Registered rule", { id = tostring(id), priority = tostring(priority or 0) })
 end
 
+---@class ManipulationAuthorityContext
+---@field actionType string The type of action (e.g., "DestroyStuff", "Dismantle", "Moveables")
+---@field action any|nil The ISBaseTimedAction instance, if applicable
+---@field object IsoObject|nil The target object being manipulated
+---@field character IsoPlayer|nil The player performing the manipulation
+---@field square IsoGridSquare|nil The square being targeted
+---@field data any|nil Additional data (e.g., mode, tool indices)
+---@field flags ManipulationAuthorityContextFlag
+---@field metadata
+
+---@class ManipulationAuthorityContextFlag
+---@field rejected boolean
+---@field reason  string|nil
+---@field adminOverride boolean
+
 ---Creates a standardized context object for firing events
----@param actionType string The type of action (e.g., "DestroyCursor", "Dismantle", "Moveables")
+---@param actionType "DestroyStuff"|"(Obsolete)Dismantle"|"Moveables" The type of action (e.g., "DestroyStuff", "Dismantle", "Moveables")
 ---@param action any|nil The ISBaseTimedAction instance, if applicable
 ---@param object IsoObject|nil The target object being manipulated
 ---@param character IsoPlayer|nil The player performing the manipulation
 ---@param square IsoGridSquare|nil The square being targeted
 ---@param data any|nil Additional data (e.g., mode, tool indices)
----@return table context The initialized context object
+---@return ManipulationAuthorityContext context The initialized context object
 function ManipulationAuthority:createContext(actionType, action, object, character, square, data)
     -- Fallback for square deduction
     if not square then
@@ -197,10 +204,11 @@ function ManipulationAuthority:dumpDiagnostics()
 end
 
 ---Registers a rule for a specific phase.
----@param phase string The phase ("validate", "pre", "post").
----@param id string A unique identifier for the rule.
----@param callback function The rule logic.
----@param priority number The priority (lower = earlier).
+---@class ManipulationAuthorityRule
+---@field phase string The phase ("validate", "pre", "post").
+---@field id string A unique identifier for the rule.
+---@field callback function The rule logic.
+---@field priority number The priority (lower = earlier).
 function ManipulationAuthority:registerRule(phase, id, callback, priority)
     local eventName
     if phase == "validate" then

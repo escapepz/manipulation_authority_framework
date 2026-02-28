@@ -1,16 +1,5 @@
 VERSION = 1,
 
-option ManipulationAuthorityFramework.VisualEventListenersMax
-{
-    page = ManipulationAuthorityFramework,
-    translation = ManipulationAuthorityFramework_VisualEventListenersMax,
-    tooltip = ManipulationAuthorityFramework_VisualEventListenersMax_tooltip,
-    type = integer,
-    min = 1,
-    max = 1000,
-    default = 25,
-}
-
 option ManipulationAuthorityFramework.ValidateEventListenersMax
 {
     page = ManipulationAuthorityFramework,
@@ -42,33 +31,6 @@ option ManipulationAuthorityFramework.PostActionEventListenersMax
     min = 1,
     max = 1000,
     default = 100,
-}
-
-option ManipulationAuthorityFramework.ISDestroyCursorProtection
-{
-    page = ManipulationAuthorityFramework,
-    translation = ManipulationAuthorityFramework_ISDestroyCursorProtection,
-    tooltip = ManipulationAuthorityFramework_ISDestroyCursorProtection_tooltip,
-    type = boolean,
-    default = true,
-}
-
-option ManipulationAuthorityFramework.ISMoveableCursorProtection
-{
-    page = ManipulationAuthorityFramework,
-    translation = ManipulationAuthorityFramework_ISMoveableCursorProtection,
-    tooltip = ManipulationAuthorityFramework_ISMoveableCursorProtection_tooltip,
-    type = boolean,
-    default = true,
-}
-
-option ManipulationAuthorityFramework.ISMoveableSpritePropsProtection
-{
-    page = ManipulationAuthorityFramework,
-    translation = ManipulationAuthorityFramework_ISMoveableSpritePropsProtection,
-    tooltip = ManipulationAuthorityFramework_ISMoveableSpritePropsProtection_tooltip,
-    type = boolean,
-    default = true,
 }
 
 option ManipulationAuthorityFramework.ISDestroyStuffActionProtection
