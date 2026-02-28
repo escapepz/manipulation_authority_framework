@@ -3,8 +3,9 @@
   "title": "Manipulation Authority Framework",
   "authors": ["escapepz"],
   "workshop": {
+    "id": 3675331117,
     "visibility": "unlisted",
-    "tags": ["Build 42"],
+    "tags": ["Build 42", "Framework", "Multiplayer", "WIP"],
     "excludes": ["maf_example_rules"]
   },
   "mods": {
