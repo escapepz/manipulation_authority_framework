@@ -2,28 +2,62 @@ local patches = {}
 
 function patches.clientSidePatch()
     -- Visual phase hooks in actions are redundant; using Cursor/UI hooks instead.
-end
 
-function patches.serverSidePatch()
-    local original_ISDismantleAction_getDuration = ISDismantleAction.getDuration
-    function ISDismantleAction:getDuration()
+    -- Add isValid hook for visual phase checking during action
+    local original_ISDismantleAction_isValid = ISDismantleAction.isValid
+    function ISDismantleAction:isValid()
         local MAF = _G.ManipulationAuthorityFramework
         if MAF and MAF.config.ISDismantleActionProtection then
+            ---@diagnostic disable-next-line: undefined-field
             local object = self.thumpable
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
                 local ctx = MAF:createContext("Dismantle", self, object, self.character)
-                -- Fire pre-action phase (solely to expose action instance to rules)
-                MAF:processAction("pre", ctx)
+                MAF:processAction("visual", ctx)
+                if ctx.flags.rejected then
+                    return false
+                end
             end
         end
-        return original_ISDismantleAction_getDuration(self)
+        return original_ISDismantleAction_isValid(self)
     end
+
+    -- So we should regis the hook from both client and server
+    -- local original_new = ISDismantleAction.new
+    -- function ISDismantleAction:new(character, thumpable)
+    --     local o = original_new(self, character, thumpable)
+    --     local MAF = _G.ManipulationAuthorityFramework
+    --     if MAF and MAF.config.ISDismantleActionProtection then
+    --         ---@diagnostic disable-next-line: unnecessary-if
+    --         if o.thumpable then
+    --             local ctx = MAF:createContext("Dismantle", o, o.thumpable, character)
+    --             -- Fire pre-action phase (registration/instance capture)
+    --             MAF:processAction("pre", ctx)
+    --             -- Note: if we needed to override maxTime, we would set o.maxTime here on creation
+    --             -- rather than inside getDuration().
+    --         end
+    --     end
+    --     return o
+    -- end
+end
+
+function patches.serverSidePatch()
+    -- [Performance Intel]
+    -- ISDismantleAction:getDuration() is called many times (not just one time).
+    -- To avoid performance issues and redundant calls, we don't process the 'pre' phase
+    -- or set maxTime inside getDuration. The rule is to fire the 'pre' phase on creation and use :stop()
+    -- to cancel the action, rather than manipulating getDuration().
+    -- local original_ISDismantleAction_getDuration = ISDismantleAction.getDuration
+    -- function ISDismantleAction:getDuration()
+    --     -- Ensure getDuration hooks only return a number.
+    --     return original_ISDismantleAction_getDuration(self)
+    -- end
 
     local original_ISDismantleAction_complete = ISDismantleAction.complete
     function ISDismantleAction:complete()
         local MAF = _G.ManipulationAuthorityFramework
         if MAF and MAF.config.ISDismantleActionProtection then
+            ---@diagnostic disable-next-line: undefined-field
             local object = self.thumpable
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
