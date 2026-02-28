@@ -13,6 +13,8 @@ local function init()
     require("maf_example_rules/rules/dismantle_action_example")()
     require("maf_example_rules/rules/moveables_example")()
 
+    require("maf_example_rules_server_commands")
+
     SafeLogger.log("[MAF] Example Rules (Server Hooks) initialized.", 30)
 end
 
