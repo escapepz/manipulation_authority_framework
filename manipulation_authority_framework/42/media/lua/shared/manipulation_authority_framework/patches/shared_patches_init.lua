@@ -18,7 +18,7 @@ return function()
         is_destroy_stuff_action.clientSidePatch()
         is_dismantle_action.clientSidePatch()
         is_moveables_action.clientSidePatch()
-        is_moveable_sprite_props.clientSidePatch()
+        -- is_moveable_sprite_props.clientSidePatch() -- redundant
     end)
 
     ---@diagnostic disable-next-line: unnecessary-if

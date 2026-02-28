@@ -10,7 +10,7 @@ local clientSidePatch = function()
         if MAFV then
             -- We pass data = nil as mode is often implicit in the context of which icon is hovered
             -- but listeners can check self.subText or other context
-            local ctx = MAFV:getVisualContext("MoveablesIconToolTip", nil, getPlayer())
+            local ctx = MAFV:getVisualContext("MoveablesIconToolTip", nil, nil)
             MAFV:processAction(ctx)
 
             if ctx.flags.rejected then

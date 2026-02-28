@@ -12,8 +12,8 @@ return function()
     if isServer() then
         Events.OnGameBoot.Add(function()
             logger:info("Applying server-side patches (Server Environment)...")
-            is_destroy_cursor_patch()
-            is_moveable_cursor_patch()
+            -- is_destroy_cursor_patch()
+            -- is_moveable_cursor_patch()
         end)
     end
 
@@ -23,7 +23,7 @@ return function()
             logger:info("Applying server-side patches (SP/Local)...")
         end
         logger:info("Applying cursor patches (Client UI)...")
-        is_destroy_cursor_patch()
-        is_moveable_cursor_patch()
+        -- is_destroy_cursor_patch()
+        -- is_moveable_cursor_patch()
     end)
 end
