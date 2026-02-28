@@ -1,11 +1,10 @@
 local patches = {}
 
 function patches.clientSidePatch()
-    local MAF = _G.ManipulationAuthorityFramework
-
     local original_ISMoveablesAction_isValidObject = ISMoveablesAction.isValidObject
     function ISMoveablesAction:isValidObject()
-        if MAF.config.ISMoveablesActionProtection then
+        local MAF = _G.ManipulationAuthorityFramework
+        if MAF and MAF.config.ISMoveablesActionProtection then
             local object = self.object
             if object and object:getModData().isShop then
                 -- Block Pickup and Scrap as a direct detour (not event-based for performance)
@@ -19,11 +18,10 @@ function patches.clientSidePatch()
 end
 
 function patches.serverSidePatch()
-    local MAF = _G.ManipulationAuthorityFramework
-
     local original_ISMoveablesAction_getDuration = ISMoveablesAction.getDuration
     function ISMoveablesAction:getDuration()
-        if MAF.config.ISMoveablesActionProtection then
+        local MAF = _G.ManipulationAuthorityFramework
+        if MAF and MAF.config.ISMoveablesActionProtection then
             local object = self.object
             if object and (self.mode == "pickup" or self.mode == "scrap") then
                 local ctx = MAF:createContext("Moveables", self, object, self.character)
@@ -36,12 +34,13 @@ function patches.serverSidePatch()
 
     local original_ISMoveablesAction_complete = ISMoveablesAction.complete
     function ISMoveablesAction:complete()
-        if MAF.config.ISMoveablesActionProtection then
+        local MAF = _G.ManipulationAuthorityFramework
+        if MAF and MAF.config.ISMoveablesActionProtection then
             local object = self.object
             if object and (self.mode == "pickup" or self.mode == "scrap") then
                 local ctx = MAF:createContext("Moveables", self, object, self.character)
                 MAF:processAction("validate", ctx)
-                
+
                 if ctx.flags.rejected then
                     ---@diagnostic disable-next-line: unnecessary-if
                     if self.action then

@@ -1,25 +1,32 @@
 local serverSidePatch = function()
     local MAF = _G.ManipulationAuthorityFramework
+    local MAFV = _G.ManipulationAuthorityFrameworkVisual
 
     -- UI Guards (Client Side)
     local original_isValidCursor = ISMoveableCursor.isValid
     function ISMoveableCursor:isValid(square)
         -- Only check when picking up or scrapping
         if
-            MAF.config.ISMoveableCursorProtection
+            MAF
+            and MAF.config.ISMoveableCursorProtection
             and (self.moveableMode == "pickup" or self.moveableMode == "scrap")
             and square
         then
-            local MAFV = _G.ManipulationAuthorityFrameworkVisual
             if MAFV then
                 local objects = square:getObjects()
                 for i = 0, objects:size() - 1 do
                     local object = objects:get(i)
-                    
+
                     -- Use pooled context for high-frequency visual check
-                    local ctx = MAFV:getVisualContext("MoveableCursor", object, self.character, square, self.moveableMode)
+                    local ctx = MAFV:getVisualContext(
+                        "MoveableCursor",
+                        object,
+                        self.character,
+                        square,
+                        self.moveableMode
+                    )
                     MAFV:processAction(ctx)
-                    
+
                     if ctx.flags.rejected then
                         return false
                     end

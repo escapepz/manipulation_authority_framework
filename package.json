@@ -5,6 +5,7 @@
         "watch": "pzstudio clean && pzstudio build && pzstudio watch",
         "update": "pzstudio update",
         "experimental:setup:vanilla": "mkdir .tmp & mklink /J \"%CD%\\.tmp\\vanilla\" \"%ProgramFiles(x86)%\\Steam\\steamapps\\common\\ProjectZomboid\\media\\lua\"",
-        "experimental:setup:nonsteam:manipulation_authority_framework": "mklink /J \"C:\\ZomboidClient1\\mods\\manipulation_authority_framework\" \"%CD%\\manipulation_authority_framework\""
+        "experimental:setup:nonsteam:manipulation_authority_framework": "mklink /J \"C:\\ZomboidClient1\\mods\\manipulation_authority_framework\" \"%CD%\\manipulation_authority_framework\"",
+        "experimental:setup:nonsteam:maf_example_rules": "mklink /J \"C:\\ZomboidClient1\\mods\\maf_example_rules\" \"%CD%\\maf_example_rules\""
     }
 }

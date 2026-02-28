@@ -1,8 +1,14 @@
 -- tests/maf_example_rules/test_shop_protection.lua
 local testFilePath = debug.getinfo(1).source:match("@?(.*/)")
 package.path = testFilePath .. "../?.lua;" .. package.path
-package.path = testFilePath .. "../../../manipulation_authority_framework/42/media/lua/server/?.lua;" .. package.path
-package.path = testFilePath .. "../../../maf_example_rules/42/media/lua/server/?.lua;" .. package.path
+package.path = testFilePath
+    .. "../../../manipulation_authority_framework/42/media/lua/shared/?.lua;"
+    .. testFilePath
+    .. "../../../manipulation_authority_framework/42/media/lua/server/?.lua;"
+    .. package.path
+package.path = testFilePath
+    .. "../../../maf_example_rules/42/media/lua/server/?.lua;"
+    .. package.path
 
 -- Related project paths
 package.path = testFilePath .. "../../../../zul/zul/42/media/lua/shared/?.lua;" .. package.path
@@ -12,29 +18,52 @@ local mock_pz = require("mock_pz")
 mock_pz.setupGlobalEnvironment()
 
 -- Mock dependencies for MAF
-local MockEventManager = { on = function() end, trigger = function() end, setMaxListeners = function() end }
+local MockEventManager =
+    { on = function() end, trigger = function() end, setMaxListeners = function() end }
 _G.pz_utils_shared = {
     escape = {
         EventManager = MockEventManager,
-        SafeLogger = { init = function() end, log = function() end, shouldLog = function() return true end },
-        SandboxVarsModule = { Create = function() return { Get = function(_, _, def) return def end } end }
-    }
+        SafeLogger = {
+            init = function() end,
+            log = function() end,
+            shouldLog = function()
+                return true
+            end,
+        },
+        SandboxVarsModule = {
+            Create = function()
+                return {
+                    Get = function(_, _, def)
+                        return def
+                    end,
+                }
+            end,
+        },
+    },
 }
 _G.pz_lua_commons_shared = {
     kikito = {
         middleclass = function(name)
             local class = { name = name }
             class.__index = class
-            setmetatable(class, { __call = function(c, ...)
-                local inst = setmetatable({}, c)
-                if inst.initialize then inst:initialize(...) end
-                return inst
-            end })
+            setmetatable(class, {
+                __call = function(c, ...)
+                    local inst = setmetatable({}, c)
+                    if inst.initialize then
+                        inst:initialize(...)
+                    end
+                    return inst
+                end,
+            })
             return class
-        end
-    }
+        end,
+    },
 }
-_G.zul = { new = function() return { info = function() end, error = function() end, debug = function() end } end }
+_G.zul = {
+    new = function()
+        return { info = function() end, error = function() end, debug = function() end }
+    end,
+}
 
 package.loaded["pz_utils_shared"] = _G.pz_utils_shared
 package.loaded["pz_lua_commons_shared"] = _G.pz_lua_commons_shared
@@ -42,14 +71,16 @@ package.loaded["zul"] = _G.zul
 
 -- Load MAF
 _G.ManipulationAuthorityFramework = nil
-local MAF_Init = require("manipulation_authority_framework/manipulation_authority")
-local MAF = MAF_Init()
+local MAF = require("manipulation_authority_framework")
 
 -- Spy on MAF.registerRule
 local registeredSpy = {}
 local real_registerRule = MAF.registerRule
 function MAF:registerRule(phase, id, callback, priority)
-    table.insert(registeredSpy, { phase = phase, id = id, callback = callback, priority = priority })
+    table.insert(
+        registeredSpy,
+        { phase = phase, id = id, callback = callback, priority = priority }
+    )
     real_registerRule(self, phase, id, callback, priority)
 end
 
@@ -60,7 +91,7 @@ TestRunner.register("ShopProtection: Registers correctly", function()
     registeredSpy = {}
     MAF.isReady = false
     MAF.pendingRules = {}
-    
+
     shop_protection_rule()
     mock_pz.triggerOnInit()
 
@@ -82,7 +113,7 @@ TestRunner.register("ShopProtection: Blocks unauthorized access", function()
     local context = {
         character = thief,
         object = obj,
-        flags = { rejected = false, reason = nil }
+        flags = { rejected = false, reason = nil },
     }
 
     shop_protection_rule()
@@ -90,7 +121,9 @@ TestRunner.register("ShopProtection: Blocks unauthorized access", function()
 
     local callback = nil
     for _, rule in ipairs(registeredSpy) do
-        if rule.id == "shop_protection" then callback = rule.callback end
+        if rule.id == "shop_protection" then
+            callback = rule.callback
+        end
     end
 
     TestRunner.assert_not_nil(callback, "Callback captured")
@@ -111,12 +144,14 @@ TestRunner.register("ShopProtection: Allows owner access", function()
     local context = {
         character = owner,
         object = obj,
-        flags = { rejected = false }
+        flags = { rejected = false },
     }
 
     local callback = nil
     for _, rule in ipairs(registeredSpy) do
-        if rule.id == "shop_protection" then callback = rule.callback end
+        if rule.id == "shop_protection" then
+            callback = rule.callback
+        end
     end
 
     ---@diagnostic disable-next-line: unnecessary-if

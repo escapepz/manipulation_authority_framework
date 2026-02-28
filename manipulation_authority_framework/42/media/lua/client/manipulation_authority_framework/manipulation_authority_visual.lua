@@ -12,7 +12,7 @@ local middleclass = pz_commons.kikito.middleclass
 local EventManager = pz_utils.escape.EventManager
 local SandboxVarsModule = pz_utils.escape.SandboxVarsModule
 
-local logger = ZUL.new("manipulation_authority_framework_visual")
+local logger = ZUL.new("manipulation_authority_framework_client")
 
 local VISUAL_EV = "MAF:Visual"
 
@@ -73,7 +73,9 @@ function ManipulationAuthorityVisual:getVisualContext(actionType, object, charac
     ctx.flags.rejected = false
     ctx.flags.reason = nil
     -- Reset metadata table if needed, but usually kept empty for visual checks
-    for k in pairs(ctx.metadata) do ctx.metadata[k] = nil end
+    for k in pairs(ctx.metadata) do
+        ctx.metadata[k] = nil
+    end
     return ctx
 end
 

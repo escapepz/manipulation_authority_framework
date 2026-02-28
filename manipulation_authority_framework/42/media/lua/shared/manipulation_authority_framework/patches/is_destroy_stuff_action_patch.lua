@@ -5,11 +5,10 @@ function patches.clientSidePatch()
 end
 
 function patches.serverSidePatch()
-    local MAF = _G.ManipulationAuthorityFramework
-
     local original_getDuration = ISDestroyStuffAction.getDuration
     function ISDestroyStuffAction:getDuration()
-        if MAF.config.ISDestroyStuffActionProtection then
+        local MAF = _G.ManipulationAuthorityFramework
+        if MAF and MAF.config.ISDestroyStuffActionProtection then
             local object = self.item
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
@@ -23,13 +22,14 @@ function patches.serverSidePatch()
 
     local original_complete = ISDestroyStuffAction.complete
     function ISDestroyStuffAction:complete()
-        if MAF.config.ISDestroyStuffActionProtection then
+        local MAF = _G.ManipulationAuthorityFramework
+        if MAF and MAF.config.ISDestroyStuffActionProtection then
             local object = self.item
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
                 local ctx = MAF:createContext("DestroyStuff", self, object, self.character)
                 MAF:processAction("validate", ctx)
-                
+
                 if ctx.flags.rejected then
                     ---@diagnostic disable-next-line: unnecessary-if
                     if self.action then

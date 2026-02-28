@@ -1,6 +1,5 @@
 VERSION = 1,
 
--- Listener / Phase Listener Limits
 option ManipulationAuthorityFramework.VisualEventListenersMax
 {
     page = ManipulationAuthorityFramework,
@@ -45,7 +44,6 @@ option ManipulationAuthorityFramework.PostActionEventListenersMax
     default = 100,
 }
 
--- Client / Cursor Patches
 option ManipulationAuthorityFramework.ISDestroyCursorProtection
 {
     page = ManipulationAuthorityFramework,
@@ -73,7 +71,6 @@ option ManipulationAuthorityFramework.ISMoveableSpritePropsProtection
     default = true,
 }
 
--- Server / Action Patches
 option ManipulationAuthorityFramework.ISDestroyStuffActionProtection
 {
     page = ManipulationAuthorityFramework,

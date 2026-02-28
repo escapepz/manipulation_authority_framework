@@ -1,10 +1,11 @@
 local serverSidePatch = function()
     local MAF = _G.ManipulationAuthorityFramework
+    local MAFV = _G.ManipulationAuthorityFrameworkVisual
 
     local original_canDestroy = ISDestroyCursor.canDestroy
     function ISDestroyCursor:canDestroy(object)
         -- Direct detour for sandbox toggle (not event-based for performance on highlight)
-        if MAF.config.ISDestroyCursorProtection then
+        if MAF and MAF.config.ISDestroyCursorProtection then
             if object and object:getModData().isShop then
                 return false
             end
@@ -15,17 +16,17 @@ local serverSidePatch = function()
     local original_isValid = ISDestroyCursor.isValid
     function ISDestroyCursor:isValid(square)
         ---@diagnostic disable-next-line: unnecessary-if
-        if MAF.config.ISDestroyCursorProtection and square then
-            local MAFV = _G.ManipulationAuthorityFrameworkVisual
+        if MAF and MAF.config.ISDestroyCursorProtection and square then
             if MAFV then
                 local objects = square:getObjects()
                 for i = 0, objects:size() - 1 do
                     local object = objects:get(i)
-                    
+
                     -- Use pooled context for high-frequency visual check
-                    local ctx = MAFV:getVisualContext("DestroyCursor", object, self.character, square)
+                    local ctx =
+                        MAFV:getVisualContext("DestroyCursor", object, self.character, square)
                     MAFV:processAction(ctx)
-                    
+
                     if ctx.flags.rejected then
                         return false
                     end

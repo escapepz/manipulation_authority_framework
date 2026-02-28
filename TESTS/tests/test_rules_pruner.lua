@@ -1,7 +1,11 @@
 -- tests/test_rules_pruner.lua
 local testFilePath = debug.getinfo(1).source:match("@?(.*/)")
 package.path = testFilePath .. "?.lua;" .. package.path
-package.path = testFilePath .. "../../manipulation_authority_framework/42/media/lua/server/?.lua;" .. package.path
+package.path = testFilePath
+    .. "../../manipulation_authority_framework/42/media/lua/shared/?.lua;"
+    .. testFilePath
+    .. "../../manipulation_authority_framework/42/media/lua/server/?.lua;"
+    .. package.path
 
 -- Related project paths
 package.path = testFilePath .. "../../../zul/zul/42/media/lua/shared/?.lua;" .. package.path
@@ -65,11 +69,13 @@ _G.pz_utils_shared = {
         SandboxVarsModule = {
             Create = function(name, defaults)
                 return {
-                    Get = function(key, def) return def end
+                    Get = function(key, def)
+                        return def
+                    end,
                 }
-            end
-        }
-    }
+            end,
+        },
+    },
 }
 _G.pz_lua_commons_shared = {
     kikito = {
@@ -79,22 +85,24 @@ _G.pz_lua_commons_shared = {
             setmetatable(class, {
                 __call = function(c, ...)
                     local inst = setmetatable({}, c)
-                    if inst.initialize then inst:initialize(...) end
+                    if inst.initialize then
+                        inst:initialize(...)
+                    end
                     return inst
-                end
+                end,
             })
             return class
-        end
-    }
+        end,
+    },
 }
 _G.zul = {
     new = function()
         return {
             info = function() end,
             error = function() end,
-            debug = function() end
+            debug = function() end,
         }
-    end
+    end,
 }
 
 package.loaded["pz_utils_shared"] = _G.pz_utils_shared
@@ -102,13 +110,13 @@ package.loaded["pz_lua_commons_shared"] = _G.pz_lua_commons_shared
 package.loaded["zul"] = _G.zul
 
 -- Load MAF
-local MAF_Init = require("manipulation_authority_framework/manipulation_authority")
-local MAF = MAF_Init()
+local MAF = require("manipulation_authority_framework")
+-- print("DEBUG: MAF = " .. tostring(MAF))
 
 TestRunner.register("Pruner: Enforces limit of 10 listeners", function()
     -- Initialize MAF manually with custom limit
     MAF.config = {} -- Reset config
-    
+
     -- Mock loadConfig to set specific low limit
     local real_loadConfig = MAF.loadConfig
     MAF.loadConfig = function(self)
@@ -125,7 +133,7 @@ TestRunner.register("Pruner: Enforces limit of 10 listeners", function()
 
     local count = MockEventManager.getListenerCount(MAF.ValidateEvent)
     TestRunner.assert_equals(count, 10, "Should have exactly 10 listeners")
-    
+
     local event = MockEventManager.events[MAF.ValidateEvent]
     ---@diagnostic disable-next-line: unnecessary-if
     if event then

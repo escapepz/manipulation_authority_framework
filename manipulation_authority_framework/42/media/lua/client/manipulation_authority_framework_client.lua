@@ -2,13 +2,16 @@
 local ZUL = require("zul")
 local logger = ZUL.new("manipulation_authority_framework_client")
 
--- Initialize Visual Phase Infrastructure
-require("manipulation_authority_framework/manipulation_authority_visual")()
+-- Initialize Core Authority Framework (Shared)
+require("manipulation_authority_framework/manipulation_authority")()
 
--- Initialize Client-side UI Patches
+-- Initialize Visual Phase Infrastructure
+local mafv = require("manipulation_authority_framework/manipulation_authority_visual")()
+
+-- Initialize Client patches
 local client_patches = require("manipulation_authority_framework/patches/client_patches_init")
 client_patches()
 
-Events.OnGameStart.Add(function()
-    logger:info("MAF Client visual phase infrastructure ready.")
-end)
+logger:info("MAF Client Infrastructure initialized.")
+
+return mafv
