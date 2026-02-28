@@ -123,6 +123,15 @@ end
 ---@param data any|nil Additional data (e.g., mode, tool indices)
 ---@return table context The initialized context object
 function ManipulationAuthority:createContext(actionType, action, object, character, square, data)
+    -- Fallback for square deduction
+    if not square then
+        if object and object.getSquare then
+            square = object:getSquare()
+        elseif action and action.square then
+            square = action.square
+        end
+    end
+
     return {
         actionType = actionType,
         action = action,
