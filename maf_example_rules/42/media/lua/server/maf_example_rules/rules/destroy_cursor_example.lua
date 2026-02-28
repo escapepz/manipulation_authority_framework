@@ -12,6 +12,7 @@ local function validateDestroyCursor(context)
         return
     end
 
+    ---@diagnostic disable-next-line: unnecessary-if
     if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
         return
     end
@@ -26,6 +27,7 @@ local function preActionDestroyCursor(context)
         return
     end
 
+    ---@diagnostic disable-next-line: unnecessary-if
     if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
         return
     end
@@ -40,6 +42,7 @@ local function postActionDestroyCursor(context)
         return
     end
 
+    ---@diagnostic disable-next-line: unnecessary-if
     if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
         return
     end

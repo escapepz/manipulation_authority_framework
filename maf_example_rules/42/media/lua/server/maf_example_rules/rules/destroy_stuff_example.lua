@@ -10,6 +10,7 @@ local function validateDestroyStuff(context)
     if context.actionType ~= "DestroyStuff" then
         return
     end
+    ---@diagnostic disable-next-line: unnecessary-if
     if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
         return
     end
@@ -21,6 +22,7 @@ local function preActionDestroyStuff(context)
     if context.actionType ~= "DestroyStuff" then
         return
     end
+    ---@diagnostic disable-next-line: unnecessary-if
     if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
         return
     end
@@ -32,6 +34,7 @@ local function postActionDestroyStuff(context)
     if context.actionType ~= "DestroyStuff" then
         return
     end
+    ---@diagnostic disable-next-line: unnecessary-if
     if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
         return
     end

@@ -22,6 +22,7 @@
         "pzstudio",
         "steamapps",
         "thumpable",
+        "Zomb",
         "Zomboid"
     ],
     "lua.debug.settings.luaVersion": "lua51"

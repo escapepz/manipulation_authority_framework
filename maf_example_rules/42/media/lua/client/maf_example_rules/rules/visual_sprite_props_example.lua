@@ -18,6 +18,7 @@ local function visualSpritePropsExample(context)
         context.flags.rejected = true
         context.flags.reason = "Immovable Structure"
 
+        ---@diagnostic disable-next-line: unnecessary-if
         if SafeLogger.shouldLog and SafeLogger.shouldLog(5) then
             SafeLogger.log("[MAF:VisualExample] Sprite props tooltip rejected", 5)
         end

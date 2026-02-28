@@ -23,6 +23,7 @@ local function visualDestroyCursorExample(context)
         context.flags.rejected = true
         context.flags.reason = "Indestructible Object"
 
+        ---@diagnostic disable-next-line: unnecessary-if
         -- Optionally log, but carefully because this fires every frame
         if SafeLogger.shouldLog and SafeLogger.shouldLog(5) then
             SafeLogger.log("[MAF:VisualExample] Cursor rejected for indestructible object", 5)

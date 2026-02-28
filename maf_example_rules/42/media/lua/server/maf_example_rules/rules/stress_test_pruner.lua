@@ -7,6 +7,7 @@ local SafeLogger = maf_utils.SafeLogger
 local function createDummyValidator(ruleId)
     ---@param context table
     return function(context)
+        ---@diagnostic disable-next-line: unnecessary-if
         -- This is a no-op validator for testing purposes
         if SafeLogger.shouldLog and SafeLogger.shouldLog(10) then
             SafeLogger.log("[MAF] Stress test rule " .. ruleId .. " executed", 10)

@@ -22,6 +22,8 @@ local function DoContextMenu(playerIndex, context, worldObject)
     local modData = worldObject:getModData()
     local indestructible = modData.indestructible or false
     local immovable = modData.immovable or false
+    local shopOwner = modData.shopOwner or nil
+    local isShop = modData.isShop or false
 
     ---@type ItemContainer|nil
     local containerObj = worldObject:getContainer()
@@ -54,6 +56,18 @@ local function DoContextMenu(playerIndex, context, worldObject)
     end)
     jMenu:addOption("immovable [" .. tostring(immovable) .. "]", worldObject, function()
         modData.immovable = not immovable
+    end)
+    jMenu:addOption("isShop [" .. tostring(isShop) .. "]", worldObject, function()
+        modData.isShop = not isShop
+    end)
+    jMenu:addOption("shopOwner [" .. tostring(shopOwner) .. "]", worldObject, function()
+        modData.shopOwner = shopOwner
+    end)
+    jMenu:addOption("shopOwner ZombRand [" .. tostring(shopOwner) .. "]", worldObject, function()
+        modData.shopOwner = "ZombRand(" .. tostring(ZombRand(1000)) .. ")"
+    end)
+    jMenu:addOption("shopOwner nil [" .. tostring(shopOwner) .. "]", worldObject, function()
+        modData.shopOwner = nil
     end)
     if thumpable then
         jMenu:addOption(

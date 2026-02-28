@@ -18,6 +18,7 @@ local function visualMoveableCursorExample(context)
         context.flags.rejected = true
         context.flags.reason = "Fixed Position"
 
+        ---@diagnostic disable-next-line: unnecessary-if
         if SafeLogger.shouldLog and SafeLogger.shouldLog(5) then
             SafeLogger.log("[MAF:VisualExample] Cursor rejected for immovable object", 5)
         end
