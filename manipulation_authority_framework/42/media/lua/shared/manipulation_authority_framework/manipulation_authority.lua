@@ -16,7 +16,6 @@ local SandboxVarsModule = pz_utils.escape.SandboxVarsModule
 local logger = ZUL.new("manipulation_authority_framework")
 
 -- Localize strings for hot-path performance
--- Localize strings for hot-path performance
 local VALIDATE_EV = "MAF:Validate"
 local PREACTION_EV = "MAF:PreAction"
 local POSTACTION_EV = "MAF:PostAction"
@@ -114,7 +113,7 @@ function ManipulationAuthority:_registerEvent(eventName, id, callback, priority)
 end
 
 ---Creates a standardized context object for firing events
----@param actionType string The type of action (e.g., "DestroyCursor", "Dismantle")
+---@param actionType string The type of action (e.g., "DestroyCursor", "Dismantle", "Moveables")
 ---@param action any|nil The ISBaseTimedAction instance, if applicable
 ---@param object IsoObject|nil The target object being manipulated
 ---@param character IsoPlayer|nil The player performing the manipulation

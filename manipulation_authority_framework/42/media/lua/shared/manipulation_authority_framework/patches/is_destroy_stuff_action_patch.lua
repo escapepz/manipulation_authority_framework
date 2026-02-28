@@ -1,27 +1,5 @@
 local patches = {}
 
-function patches.clientSidePatch()
-    -- Visual phase hooks in actions are redundant.
-
-    -- So we should regis the hook from both client and server
-    -- local original_new = ISDestroyStuffAction.new
-    -- function ISDestroyStuffAction:new(character, item, cornerCounter)
-    --     local o = original_new(self, character, item, cornerCounter)
-    --     local MAF = _G.ManipulationAuthorityFramework
-    --     if MAF and MAF.config.ISDestroyStuffActionProtection then
-    --         ---@diagnostic disable-next-line: unnecessary-if
-    --         if o.item then
-    --             local ctx = MAF:createContext("DestroyStuff", o, o.item, character)
-    --             -- Fire pre-action phase (registration/instance capture)
-    --             MAF:processAction("pre", ctx)
-    --             -- Note: if we needed to override maxTime, we would set o.maxTime here on creation
-    --             -- rather than inside getDuration().
-    --         end
-    --     end
-    --     return o
-    -- end
-end
-
 function patches.serverSidePatch()
     -- [Performance Intel]
     -- ISDestroyStuffAction:getDuration() is called many times (not just one time).
