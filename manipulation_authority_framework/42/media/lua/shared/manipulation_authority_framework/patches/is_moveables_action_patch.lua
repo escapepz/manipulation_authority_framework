@@ -1,6 +1,8 @@
 local patches = {}
 
 function patches.serverSidePatch()
+    local MAF = _G.ManipulationAuthorityFramework
+
     -- [Performance Intel]
     -- ISMoveablesAction:getDuration() is called many times (not just one time).
     -- We can return 1 here if the manipulation is rejected by MAF, allowing the
@@ -10,13 +12,18 @@ function patches.serverSidePatch()
     -- Should return only number
     local original_ISMoveablesAction_getDuration = ISMoveablesAction.getDuration
     function ISMoveablesAction:getDuration()
-        local MAF = _G.ManipulationAuthorityFramework
+        -- Ensure we only run validation once per action instance
+        if self.maf_ctx then
+            return self.maf_ctx.flags.rejected and 1 or original_ISMoveablesAction_getDuration(self)
+        end
+
         if MAF and MAF.config.ISMoveablesActionProtection then
             local object = self.object
             local mode = self.mode
             if object and (mode == "pickup" or mode == "scrap") then
                 local ctx = MAF:createContext("Moveables", self, object, self.character)
                 MAF:processAction("validate", ctx)
+                self.maf_ctx = ctx -- Cache context
 
                 if ctx.flags.rejected then
                     return 1
@@ -29,13 +36,13 @@ function patches.serverSidePatch()
 
     local original_ISMoveablesAction_complete = ISMoveablesAction.complete
     function ISMoveablesAction:complete()
-        local MAF = _G.ManipulationAuthorityFramework
         if MAF and MAF.config.ISMoveablesActionProtection then
             local object = self.object
             local mode = self.mode
             if object and (mode == "pickup" or mode == "scrap") then
-                -- pre phase should be here
-                local ctx = MAF:createContext("Moveables", self, object, self.character)
+                -- Re-use cached context if available, otherwise create new
+                local ctx = self.maf_ctx
+                    or MAF:createContext("Moveables", self, object, self.character)
                 MAF:processAction("pre", ctx)
 
                 if ctx.flags.rejected then

@@ -15,8 +15,8 @@ Sandbox_EN = {
     Sandbox_ManipulationAuthorityFramework_ISDestroyStuffActionProtection = "[Server] Enable Destroy Action Protection",
     Sandbox_ManipulationAuthorityFramework_ISDestroyStuffActionProtection_tooltip = "Enable MAF hooks for destroying items behind the scenes.",
 
-    Sandbox_ManipulationAuthorityFramework_ISDismantleActionProtection = "[Server] Enable Dismantle Protection",
-    Sandbox_ManipulationAuthorityFramework_ISDismantleActionProtection_tooltip = "Enable MAF hooks for dismantling actions.",
+    Sandbox_ManipulationAuthorityFramework_ISDismantleActionProtection = "[Server] (Obsolete) Enable Dismantle Protection",
+    Sandbox_ManipulationAuthorityFramework_ISDismantleActionProtection_tooltip = "(Obsolete) Enable MAF hooks for dismantling actions.",
 
     Sandbox_ManipulationAuthorityFramework_ISMoveablesActionProtection = "[Server] Enable Moveables Action Protection",
     Sandbox_ManipulationAuthorityFramework_ISMoveablesActionProtection_tooltip = "Enable MAF hooks for picking up or scraping objects.",

@@ -1,6 +1,8 @@
 local patches = {}
 
 function patches.serverSidePatch()
+    local MAF = _G.ManipulationAuthorityFramework
+
     -- [Performance Intel]
     -- ISDestroyStuffAction:getDuration() is called many times (not just one time).
     -- We can return 1 here if the manipulation is rejected by MAF, allowing the
@@ -10,13 +12,18 @@ function patches.serverSidePatch()
     -- Should return only number
     local original_getDuration = ISDestroyStuffAction.getDuration
     function ISDestroyStuffAction:getDuration()
-        local MAF = _G.ManipulationAuthorityFramework
+        -- Ensure we only run validation once per action instance
+        if self.maf_ctx then
+            return self.maf_ctx.flags.rejected and 1 or original_getDuration(self)
+        end
+
         if MAF and MAF.config.ISDestroyStuffActionProtection then
             local object = self.item
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
                 local ctx = MAF:createContext("DestroyStuff", self, object, self.character)
                 MAF:processAction("validate", ctx)
+                self.maf_ctx = ctx -- Cache context
 
                 if ctx.flags.rejected then
                     return 1
@@ -29,13 +36,13 @@ function patches.serverSidePatch()
 
     local original_complete = ISDestroyStuffAction.complete
     function ISDestroyStuffAction:complete()
-        local MAF = _G.ManipulationAuthorityFramework
         if MAF and MAF.config.ISDestroyStuffActionProtection then
             local object = self.item
             ---@diagnostic disable-next-line: unnecessary-if
             if object then
-                -- pre phase should be here
-                local ctx = MAF:createContext("DestroyStuff", self, object, self.character)
+                -- Re-use cached context if available, otherwise create new
+                local ctx = self.maf_ctx
+                    or MAF:createContext("DestroyStuff", self, object, self.character)
                 MAF:processAction("pre", ctx)
 
                 if ctx.flags.rejected then
