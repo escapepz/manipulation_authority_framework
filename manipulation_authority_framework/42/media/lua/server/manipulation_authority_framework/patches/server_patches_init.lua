@@ -17,17 +17,11 @@ return function()
         end)
     end
 
-    ---@diagnostic disable-next-line: unnecessary-if
-    if not isMultiplayer() then
-        Events.OnGameStart.Add(function()
-            logger:info("Applying server-side patches (SP/Local)...")
-            is_destroy_cursor_patch()
-            is_moveable_cursor_patch()
-        end)
-    end
-
     -- Cursors also need to load on client start to ensure they are active for the local player
     Events.OnGameStart.Add(function()
+        if not isMultiplayer() then
+            logger:info("Applying server-side patches (SP/Local)...")
+        end
         logger:info("Applying cursor patches (Client UI)...")
         is_destroy_cursor_patch()
         is_moveable_cursor_patch()
