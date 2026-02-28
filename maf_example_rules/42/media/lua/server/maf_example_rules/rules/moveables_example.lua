@@ -7,26 +7,46 @@ local tostring = tostring
 
 ---Validation rule example
 local function validateMoveables(context)
+    local ctx = context ---@type ManipulationAuthorityContext
     if context.actionType ~= "Moveables" then
         return
     end
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
-    SafeLogger.log("[MAF:MoveablesExample] Validate phase executed", 20)
+
+    local _object = ctx.object
+    if _object then
+        local modData = _object:getModData()
+        if modData.immovable then
+            context.flags.rejected = true
+        end
+    end
+
+    SafeLogger.log("[MAF:MoveablesExample] Validate phase executed", 30)
 end
 
 ---Pre-action rule example
 local function preActionMoveables(context)
+    local ctx = context ---@type ManipulationAuthorityContext
     if context.actionType ~= "Moveables" then
         return
     end
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
-    SafeLogger.log("[MAF:MoveablesExample] PreAction phase executed", 20)
+
+    local _object = ctx.object
+    if _object then
+        local modData = _object:getModData()
+        if modData.immovable then
+            context.flags.rejected = true
+        end
+    end
+
+    SafeLogger.log("[MAF:MoveablesExample] PreAction phase executed", 30)
 end
 
 ---Post-action rule example
@@ -35,10 +55,10 @@ local function postActionMoveables(context)
         return
     end
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
-    SafeLogger.log("[MAF:MoveablesExample] PostAction phase executed", 20)
+    SafeLogger.log("[MAF:MoveablesExample] PostAction phase executed", 30)
 end
 
 return function()

@@ -7,26 +7,48 @@ local tostring = tostring
 
 ---Validation rule example
 local function validateDestroyStuff(context)
-    if context.actionType ~= "DestroyStuff" then
+    local ctx = context ---@type ManipulationAuthorityContext
+    if ctx.actionType ~= "DestroyStuff" then
         return
     end
+
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
-    SafeLogger.log("[MAF:DestroyStuffExample] Validate phase executed", 20)
+
+    local _object = ctx.object
+    if _object then
+        local modData = _object:getModData()
+        if modData.indestructible then
+            ctx.flags.rejected = true
+        end
+    end
+
+    SafeLogger.log("[MAF:DestroyStuffExample] Validate phase executed", 30)
 end
 
 ---Pre-action rule example
 local function preActionDestroyStuff(context)
-    if context.actionType ~= "DestroyStuff" then
+    local ctx = context ---@type ManipulationAuthorityContext
+    if ctx.actionType ~= "DestroyStuff" then
         return
     end
+
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
-    SafeLogger.log("[MAF:DestroyStuffExample] PreAction phase executed", 20)
+
+    local _object = ctx.object
+    if _object then
+        local modData = _object:getModData()
+        if modData.indestructible then
+            ctx.flags.rejected = true
+        end
+    end
+
+    SafeLogger.log("[MAF:DestroyStuffExample] PreAction phase executed", 30)
 end
 
 ---Post-action rule example
@@ -35,10 +57,10 @@ local function postActionDestroyStuff(context)
         return
     end
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
-    SafeLogger.log("[MAF:DestroyStuffExample] PostAction phase executed", 20)
+    SafeLogger.log("[MAF:DestroyStuffExample] PostAction phase executed", 30)
 end
 
 return function()

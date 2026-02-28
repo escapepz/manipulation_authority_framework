@@ -7,32 +7,50 @@ local tostring = tostring
 
 ---Validation rule example: Check if manipulated object has a certain condition
 local function validateDismantle(context)
+    local ctx = context ---@type ManipulationAuthorityContext
     -- Only run for Dismantle action
     if context.actionType ~= "Dismantle" then
         return
     end
 
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
 
-    SafeLogger.log("[MAF:DismantleExample] Validate phase executed for Dismantle", 20)
+    local _object = ctx.object
+    if _object then
+        local modData = _object:getModData()
+        if modData.indestructible or modData.immovable then
+            context.flags.rejected = true
+        end
+    end
+
+    SafeLogger.log("[MAF:DismantleExample] Validate phase executed for Dismantle", 30)
 end
 
 ---Pre-action rule example: Do something right before the manipulation happens
 local function preActionDismantle(context)
+    local ctx = context ---@type ManipulationAuthorityContext
     -- Only run for Dismantle action
     if context.actionType ~= "Dismantle" then
         return
     end
 
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
 
-    SafeLogger.log("[MAF:DismantleExample] PreAction phase executed for Dismantle", 20)
+    local _object = ctx.object
+    if _object then
+        local modData = _object:getModData()
+        if modData.indestructible or modData.immovable then
+            context.flags.rejected = true
+        end
+    end
+
+    SafeLogger.log("[MAF:DismantleExample] PreAction phase executed for Dismantle", 30)
 end
 
 ---Post-action rule example: Do something right after the manipulation successfully finishes
@@ -43,11 +61,11 @@ local function postActionDismantle(context)
     end
 
     ---@diagnostic disable-next-line: unnecessary-if
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
 
-    SafeLogger.log("[MAF:DismantleExample] PostAction phase executed for Dismantle", 20)
+    SafeLogger.log("[MAF:DismantleExample] PostAction phase executed for Dismantle", 30)
 end
 
 return function()

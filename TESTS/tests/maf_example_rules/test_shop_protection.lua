@@ -2,12 +2,12 @@
 local testFilePath = debug.getinfo(1).source:match("@?(.*/)")
 package.path = testFilePath .. "../?.lua;" .. package.path
 package.path = testFilePath
-    .. "../../../manipulation_authority_framework/42/media/lua/shared/?.lua;"
+    .. "../../../maf_example_rules/42/media/lua/shared/?.lua;"
     .. testFilePath
-    .. "../../../manipulation_authority_framework/42/media/lua/server/?.lua;"
+    .. "../../../maf_example_rules/42/media/lua/server/?.lua;"
     .. package.path
 package.path = testFilePath
-    .. "../../../maf_example_rules/42/media/lua/server/?.lua;"
+    .. "../../../manipulation_authority_framework/42/media/lua/shared/?.lua;"
     .. package.path
 
 -- Related project paths
@@ -21,6 +21,13 @@ mock_pz.setupGlobalEnvironment()
 local MockEventManager =
     { on = function() end, trigger = function() end, setMaxListeners = function() end }
 _G.pz_utils_shared = {
+    konijima = {
+        Utilities = {
+            IsPlayerAdmin = function()
+                return false
+            end,
+        },
+    },
     escape = {
         EventManager = MockEventManager,
         SafeLogger = {
@@ -85,7 +92,7 @@ function MAF:registerRule(phase, id, callback, priority)
 end
 
 -- Load the rule file
-local shop_protection_rule = require("manipulation_authority_framework/rules/shop_protection_rule")
+local shop_protection_rule = require("maf_example_rules/rules/shop_protection_rule")
 
 TestRunner.register("ShopProtection: Registers correctly", function()
     registeredSpy = {}

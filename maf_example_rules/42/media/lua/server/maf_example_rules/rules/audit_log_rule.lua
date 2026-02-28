@@ -7,7 +7,8 @@ local tostring = tostring
 
 ---Post-action rule to log successful manipulations for auditing.
 local function logManipulation(context)
-    if SafeLogger.shouldLog and not SafeLogger.shouldLog(20) then
+    ---@diagnostic disable-next-line: unnecessary-if
+    if SafeLogger.shouldLog and not SafeLogger.shouldLog(30) then
         return
     end
 
