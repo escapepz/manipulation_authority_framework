@@ -2,6 +2,9 @@ local maf_utils = require("maf_example_rules")
 
 local SafeLogger = maf_utils.SafeLogger
 
+local pz_utils = require("pz_utils_shared")
+local KUtilities = pz_utils.konijima.Utilities
+
 local function init()
     SafeLogger.log("[MAF] Initializing Example Rules (Server Hooks)...", 30)
 
@@ -18,16 +21,14 @@ local function init()
     SafeLogger.log("[MAF] Example Rules (Server Hooks) initialized.", 30)
 end
 
----@diagnostic disable-next-line: unnecessary-if
-if isServer() then
+if KUtilities.IsServerOrSinglePlayer() then
     Events.OnGameBoot.Add(function()
         SafeLogger.log("[MAF] Applying server-side rules (Dedicated Server environment)...", 30)
         init()
     end)
 end
 
----@diagnostic disable-next-line: unnecessary-if
-if not isMultiplayer() then
+if KUtilities.IsSinglePlayer() then
     Events.OnGameStart.Add(function()
         SafeLogger.log("[MAF] Applying server-side rules (SP/Local environment)...", 30)
         init()

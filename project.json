@@ -6,16 +6,16 @@
     "id": 3675331117,
     "visibility": "unlisted",
     "tags": ["Build 42", "Framework", "Multiplayer", "WIP"],
-    "excludes": ["maf_example_rules"]
+    "excludes": ["manipulation_authority_framework"]
   },
   "mods": {
     "manipulation_authority_framework": {
       "name": "Manipulation Authority Framework",
-      "description": "",
+      "description": "A modding framework that allows creators to build custom rules and restrictions for moving, dismantling, or destroying world objects.",
       "require": ["\\zul", "\\pz_lua_commons"]
     },
     "maf_example_rules": {
-      "name": "maf_example_rules",
+      "name": "Manipulation Authority Framework Example Rules",
       "description": "",
       "require": ["\\manipulation_authority_framework"]
     }

@@ -26,6 +26,29 @@ local POSTACTION_EV = "MAF:PostAction"
 ---@field public PreActionEvent string
 ---@field public PostActionEvent string
 ---@field public context
+
+---@class ManipulationAuthorityContext
+---@field actionType string The type of action (e.g., "DestroyStuff", "Dismantle", "Moveables")
+---@field action any|nil The ISBaseTimedAction instance, if applicable
+---@field object IsoObject|nil The target object being manipulated
+---@field character IsoPlayer|nil The player performing the manipulation
+---@field square IsoGridSquare|nil The square being targeted
+---@field data any|nil Additional data (e.g., mode, tool indices)
+---@field flags ManipulationAuthorityContextFlag
+---@field metadata
+
+---@class ManipulationAuthorityContextFlag
+---@field rejected boolean
+---@field reason  string|nil
+---@field adminOverride boolean
+
+---@class ManipulationAuthorityRule
+---@field phase string The phase ("validate", "pre", "post").
+---@field id string A unique identifier for the rule.
+---@field callback function The rule logic.
+---@field priority number The priority (lower = earlier).
+
+---@type ManipulationAuthority
 local ManipulationAuthority = middleclass("ManipulationAuthority")
 
 function ManipulationAuthority:initialize()
@@ -103,21 +126,6 @@ function ManipulationAuthority:_registerEvent(eventName, id, callback, priority)
     EventManager.on(eventName, callback, priority)
     logger:info("Registered rule", { id = tostring(id), priority = tostring(priority or 0) })
 end
-
----@class ManipulationAuthorityContext
----@field actionType string The type of action (e.g., "DestroyStuff", "Dismantle", "Moveables")
----@field action any|nil The ISBaseTimedAction instance, if applicable
----@field object IsoObject|nil The target object being manipulated
----@field character IsoPlayer|nil The player performing the manipulation
----@field square IsoGridSquare|nil The square being targeted
----@field data any|nil Additional data (e.g., mode, tool indices)
----@field flags ManipulationAuthorityContextFlag
----@field metadata
-
----@class ManipulationAuthorityContextFlag
----@field rejected boolean
----@field reason  string|nil
----@field adminOverride boolean
 
 ---Creates a standardized context object for firing events
 ---@param actionType "DestroyStuff"|"(Obsolete)Dismantle"|"Moveables" The type of action (e.g., "DestroyStuff", "Dismantle", "Moveables")
@@ -204,11 +212,7 @@ function ManipulationAuthority:dumpDiagnostics()
 end
 
 ---Registers a rule for a specific phase.
----@class ManipulationAuthorityRule
----@field phase string The phase ("validate", "pre", "post").
----@field id string A unique identifier for the rule.
----@field callback function The rule logic.
----@field priority number The priority (lower = earlier).
+---@type ManipulationAuthorityRule
 function ManipulationAuthority:registerRule(phase, id, callback, priority)
     local eventName
     if phase == "validate" then

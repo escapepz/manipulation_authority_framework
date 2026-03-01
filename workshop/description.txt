@@ -36,4 +36,13 @@ If no permission is received you may not alter the mod, and it must be treated a
 
 [hr][/hr]
 
+[h2]Support the Author[/h2]
+
+[url=https://ko-fi.com/escapepz][img]https://escapepz.github.io/escapepz/images/kofi.gif[/img][/url]
+[quote]
+If you find this mod helpful, consider supporting the author on Ko-fi: [url=https://ko-fi.com/escapepz]https://ko-fi.com/escapepz[/url]
+[/quote]
+
+[hr][/hr]
+
 _____
