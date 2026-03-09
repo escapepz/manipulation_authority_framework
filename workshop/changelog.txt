@@ -1,0 +1,7 @@
+
+v1.0.1
+better SP/MP register
+https://github.com/escapepz/manipulation_authority_framework/releases/tag/v1.0.1
+
+v1.0.0
+first release
