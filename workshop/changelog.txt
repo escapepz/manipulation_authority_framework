@@ -1,3 +1,5 @@
+v1.0.2
+add support for 42.15.0
 
 v1.0.1
 better SP/MP register
