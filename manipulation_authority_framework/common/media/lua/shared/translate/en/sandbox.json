@@ -1,0 +1,21 @@
+{
+    "Sandbox_ManipulationAuthorityFramework": "Manipulation Authority Framework",
+
+    "Sandbox_ManipulationAuthorityFramework_ValidateEventListenersMax": "Max Validate Rules",
+    "Sandbox_ManipulationAuthorityFramework_ValidateEventListenersMax_tooltip": "Maximum number of rules allowed for the Validate (server final guard) phase.",
+
+    "Sandbox_ManipulationAuthorityFramework_PreActionEventListenersMax": "Max Pre-Action Rules",
+    "Sandbox_ManipulationAuthorityFramework_PreActionEventListenersMax_tooltip": "Maximum number of rules allowed for the Pre-Action phase.",
+
+    "Sandbox_ManipulationAuthorityFramework_PostActionEventListenersMax": "Max Post-Action Rules",
+    "Sandbox_ManipulationAuthorityFramework_PostActionEventListenersMax_tooltip": "Maximum number of rules allowed for the Post-Action phase.",
+
+    "Sandbox_ManipulationAuthorityFramework_ISDestroyStuffActionProtection": "[Server] Enable Destroy Action Protection",
+    "Sandbox_ManipulationAuthorityFramework_ISDestroyStuffActionProtection_tooltip": "Enable MAF hooks for destroying items behind the scenes.",
+
+    "Sandbox_ManipulationAuthorityFramework_ISDismantleActionProtection": "[Server] (Obsolete) Enable Dismantle Protection",
+    "Sandbox_ManipulationAuthorityFramework_ISDismantleActionProtection_tooltip": "(Obsolete) Enable MAF hooks for dismantling actions.",
+
+    "Sandbox_ManipulationAuthorityFramework_ISMoveablesActionProtection": "[Server] Enable Moveables Action Protection",
+    "Sandbox_ManipulationAuthorityFramework_ISMoveablesActionProtection_tooltip": "Enable MAF hooks for picking up or scraping objects."
+}
