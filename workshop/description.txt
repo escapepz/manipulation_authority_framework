@@ -19,6 +19,10 @@ A modding framework that allows creators to build custom rules and restrictions 
 
 This framework is essential for creators building roleplay, base protection, and world persistence systems for multiplayer servers.
 
+[h3]⚠️ Important Note[/h3]
+This mod is not designed to be installed alone. It serves as a core dependency for other mods.
+ [url=https://steamcommunity.com/workshop/filedetails/discussion/3675331117/760682600544365580/]Which mods use MAF ? (Add yours here!)[/url]
+
 [hr][/hr]
 [h2]New suggestion for the mod?[/h2]
 Create a workshop discussion or [url=https://ko-fi.com/escapepz/commissions][b]open a commission via Ko-fi[/b][/url].

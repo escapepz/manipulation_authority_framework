@@ -1,5 +1,12 @@
+v1.0.3
+- revert the mod.info name and desc
+-
+
 v1.0.2
-add support for 42.15.0
+- add support for 42.15.0
+- workshop image 512x512
+
+https://github.com/escapepz/manipulation_authority_framework/releases/tag/v1.0.2
 
 v1.0.1
 better SP/MP register

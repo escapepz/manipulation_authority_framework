@@ -1,23 +1,25 @@
 {
-    "$schema": "https://raw.githubusercontent.com/escapepz/project-zomboid-studio/refs/heads/b42.13.1/pzstudio.schema.json",
+  "$schema": "https://raw.githubusercontent.com/escapepz/project-zomboid-studio/refs/heads/42.17.0/pzstudio.schema.json",
+  "workshop": {
     "title": "Manipulation Authority Framework",
-    "authors": ["escapepz"],
-    "workshop": {
-        "id": 3675331117,
-        "visibility": "unlisted",
-        "tags": ["Build 42", "Framework", "Multiplayer", "WIP"],
-        "excludes": ["maf_example_rules"]
+    "id": 3675331117,
+    "visibility": "public",
+    "tags": ["Build 42", "Framework", "Multiplayer", "WIP"]
+  },
+  "excludes": ["maf_example_rules"],
+  "mods": {
+    "manipulation_authority_framework": {
+      "author": "escapepz",
+      "name": "Manipulation Authority Framework",
+      "description": "A modding framework that allows creators to build custom rules and restrictions for moving, dismantling, or destroying world objects.",
+      "require": ["zul", "pz_lua_commons"],
+      "modversion": "1.0.2",
+      "versionMin": "42.13.1"
     },
-    "mods": {
-        "manipulation_authority_framework": {
-            "name": "Manipulation Authority Framework",
-            "description": "A modding framework that allows creators to build custom rules and restrictions for moving, dismantling, or destroying world objects.",
-            "require": ["\\zul", "\\pz_lua_commons"]
-        },
-        "maf_example_rules": {
-            "name": "Manipulation Authority Framework Example Rules",
-            "description": "",
-            "require": ["\\manipulation_authority_framework"]
-        }
+    "maf_example_rules": {
+      "name": "Manipulation Authority Framework Example Rules",
+      "description": "",
+      "require": ["manipulation_authority_framework"]
     }
+  }
 }
